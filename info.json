@@ -1,0 +1,10 @@
+{
+  "name": "Raiseque Ai Chatbot",
+  "version": "1.0.1",
+  "homepage": "https://github.com/deepakmeher1/Raiseque-AI-Chatbot",
+  "download_url": "https://github.com/deepakmeher1/Raiseque-AI-Chatbot/archive/refs/tags/v1.0.1.zip",
+  "sections": {
+    "description": "An automated AI chatbot for WordPress. Dynamically syncs database content, captures leads, and logs them to Google Sheets.",
+    "changelog": "<ul><li>RAG token limit optimization.</li><li>GitHub auto-update integration.</li></ul>"
+  }
+}

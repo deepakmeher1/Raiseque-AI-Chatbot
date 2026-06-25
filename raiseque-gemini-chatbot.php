@@ -128,19 +128,18 @@ function rq_chatbot_plugin_row_meta( $links, $file ) {
 add_filter( 'plugin_row_meta', 'rq_chatbot_plugin_row_meta', 10, 2 );
 
 /**
- * Check for updates from GitHub releases.
+ * Check for updates from GitHub Raw CDN info.json.
  */
 function rq_chatbot_check_github_updates( $transient ) {
     if ( empty( $transient->checked ) ) {
         return $transient;
     }
 
-    $repo_owner = defined( 'RQ_CHATBOT_GITHUB_OWNER' ) ? RQ_CHATBOT_GITHUB_OWNER : 'deepak-ku-meher';
-    $repo_name  = defined( 'RQ_CHATBOT_GITHUB_REPO' ) ? RQ_CHATBOT_GITHUB_REPO : 'raiseque-gemini-chatbot';
+    $repo_owner = defined( 'RQ_CHATBOT_GITHUB_OWNER' ) ? RQ_CHATBOT_GITHUB_OWNER : 'deepakmeher1';
+    $repo_name  = defined( 'RQ_CHATBOT_GITHUB_REPO' ) ? RQ_CHATBOT_GITHUB_REPO : 'Raiseque-AI-Chatbot';
 
-    $api_url = "https://api.github.com/repos/{$repo_owner}/{$repo_name}/releases/latest";
+    $info_url = "https://raw.githubusercontent.com/{$repo_owner}/{$repo_name}/main/info.json";
 
-    // Set User-Agent as required by GitHub API
     $args = array(
         'timeout' => 10,
         'headers' => array(
@@ -148,43 +147,26 @@ function rq_chatbot_check_github_updates( $transient ) {
         )
     );
 
-    $response = wp_safe_remote_get( $api_url, $args );
+    $response = wp_safe_remote_get( $info_url, $args );
     if ( is_wp_error( $response ) || wp_remote_retrieve_response_code( $response ) !== 200 ) {
         return $transient;
     }
 
-    $release = json_decode( wp_remote_retrieve_body( $response ), true );
-    if ( ! $release || empty( $release['tag_name'] ) ) {
+    $info = json_decode( wp_remote_retrieve_body( $response ), true );
+    if ( ! $info || empty( $info['version'] ) ) {
         return $transient;
     }
 
-    // Clean version tag (e.g. v1.0.1 -> 1.0.1)
-    $new_version = ltrim( $release['tag_name'], 'v' );
+    $new_version = ltrim( $info['version'], 'v' );
     $plugin_slug = 'raiseque-gemini-chatbot/raiseque-gemini-chatbot.php';
 
     if ( version_compare( RQ_CHATBOT_VERSION, $new_version, '<' ) ) {
-        // Find the download URL. First check release assets for a custom zip file.
-        $download_url = '';
-        if ( ! empty( $release['assets'] ) ) {
-            foreach ( $release['assets'] as $asset ) {
-                if ( strpos( $asset['name'], 'raiseque-gemini-chatbot.zip' ) !== false || strpos( $asset['name'], '.zip' ) !== false ) {
-                    $download_url = $asset['browser_download_url'];
-                    break;
-                }
-            }
-        }
-
-        // Fallback to source zipball if no release asset zip is found
-        if ( empty( $download_url ) ) {
-            $download_url = $release['zipball_url'];
-        }
-
         $obj = new stdClass();
         $obj->slug        = 'raiseque-gemini-chatbot';
         $obj->plugin      = $plugin_slug;
         $obj->new_version = $new_version;
-        $obj->url         = $release['html_url'];
-        $obj->package     = $download_url;
+        $obj->url         = $info['homepage'];
+        $obj->package     = $info['download_url'];
 
         $transient->response[ $plugin_slug ] = $obj;
     }
@@ -202,12 +184,12 @@ function rq_chatbot_github_plugin_popup_info( $res, $action, $args ) {
     }
 
     if ( isset( $args->slug ) && $args->slug === 'raiseque-gemini-chatbot' ) {
-        $repo_owner = defined( 'RQ_CHATBOT_GITHUB_OWNER' ) ? RQ_CHATBOT_GITHUB_OWNER : 'deepak-ku-meher';
-        $repo_name  = defined( 'RQ_CHATBOT_GITHUB_REPO' ) ? RQ_CHATBOT_GITHUB_REPO : 'raiseque-gemini-chatbot';
+        $repo_owner = defined( 'RQ_CHATBOT_GITHUB_OWNER' ) ? RQ_CHATBOT_GITHUB_OWNER : 'deepakmeher1';
+        $repo_name  = defined( 'RQ_CHATBOT_GITHUB_REPO' ) ? RQ_CHATBOT_GITHUB_REPO : 'Raiseque-AI-Chatbot';
 
-        $api_url = "https://api.github.com/repos/{$repo_owner}/{$repo_name}/releases/latest";
+        $info_url = "https://raw.githubusercontent.com/{$repo_owner}/{$repo_name}/main/info.json";
         
-        $response = wp_safe_remote_get( $api_url, array(
+        $response = wp_safe_remote_get( $info_url, array(
             'timeout' => 10,
             'headers' => array(
                 'User-Agent' => 'WordPress/' . get_bloginfo( 'version' ) . '; ' . home_url(),
@@ -215,31 +197,18 @@ function rq_chatbot_github_plugin_popup_info( $res, $action, $args ) {
         ) );
         
         if ( ! is_wp_error( $response ) && wp_remote_retrieve_response_code( $response ) === 200 ) {
-            $release = json_decode( wp_remote_retrieve_body( $response ), true );
-            if ( $release ) {
-                $new_version = ltrim( $release['tag_name'], 'v' );
-                
-                // Find download URL from assets or fallback to zipball
-                $download_url = $release['zipball_url'];
-                if ( ! empty( $release['assets'] ) ) {
-                    foreach ( $release['assets'] as $asset ) {
-                        if ( strpos( $asset['name'], 'raiseque-gemini-chatbot.zip' ) !== false || strpos( $asset['name'], '.zip' ) !== false ) {
-                            $download_url = $asset['browser_download_url'];
-                            break;
-                        }
-                    }
-                }
-
+            $info = json_decode( wp_remote_retrieve_body( $response ), true );
+            if ( $info ) {
                 $res = new stdClass();
-                $res->name           = 'Raiseque Ai Chatbot';
+                $res->name           = $info['name'];
                 $res->slug           = 'raiseque-gemini-chatbot';
-                $res->version        = $new_version;
+                $res->version        = $info['version'];
                 $res->author         = 'Deepak Ku Meher (Raiseque)';
-                $res->homepage       = $release['html_url'];
-                $res->download_link  = $download_url;
+                $res->homepage       = $info['homepage'];
+                $res->download_link  = $info['download_url'];
                 $res->sections       = array(
-                    'description' => 'An automated, zero platform lock-in AI chatbot for WordPress. Dynamically syncs database content, captures user leads, and logs them to Google Sheets.',
-                    'changelog'   => wp_kses_post( wpautop( $release['body'] ) )
+                    'description' => isset( $info['sections']['description'] ) ? $info['sections']['description'] : '',
+                    'changelog'   => isset( $info['sections']['changelog'] ) ? $info['sections']['changelog'] : ''
                 );
                 return $res;
             }
@@ -251,29 +220,24 @@ function rq_chatbot_github_plugin_popup_info( $res, $action, $args ) {
 add_filter( 'plugins_api', 'rq_chatbot_github_plugin_popup_info', 20, 3 );
 
 /**
- * Ensure the plugin folder is renamed correctly to 'raiseque-gemini-chatbot'
- * after extracting the GitHub zipball (which extracts as repo-tag_name).
+ * Ensure the extracted folder is renamed correctly to 'raiseque-gemini-chatbot'
+ * during update installation (using the source selection filter).
  */
-function rq_chatbot_rename_github_zipball( $response, $hook_extra, $result ) {
-    if ( isset( $hook_extra['plugin'] ) && $hook_extra['plugin'] === 'raiseque-gemini-chatbot/raiseque-gemini-chatbot.php' ) {
-        global $wp_filesystem;
+function rq_chatbot_rename_github_zipball( $source, $remote_source, $upgrader, $hook_extra = array() ) {
+    global $wp_filesystem;
+    
+    // Only proceed if our main plugin file exists inside the extracted source folder
+    if ( $wp_filesystem->exists( $source . 'raiseque-gemini-chatbot.php' ) ) {
+        $parent = trailingslashit( dirname( $source ) );
+        $new_source = $parent . 'raiseque-gemini-chatbot/';
         
-        $destination = $result['destination'];
-        $correct_destination = WP_PLUGIN_DIR . '/raiseque-gemini-chatbot/';
-        
-        if ( rtrim( $destination, '/' ) !== rtrim( $correct_destination, '/' ) ) {
-            $was_active = is_plugin_active( $hook_extra['plugin'] );
-            
-            // Move/Rename folder
-            if ( $wp_filesystem->move( $destination, $correct_destination, true ) ) {
-                $result['destination'] = $correct_destination;
-                
-                if ( $was_active ) {
-                    activate_plugin( 'raiseque-gemini-chatbot/raiseque-gemini-chatbot.php' );
-                }
+        if ( $source !== $new_source ) {
+            if ( $wp_filesystem->move( $source, $new_source, true ) ) {
+                return $new_source;
             }
         }
     }
-    return $response;
+    return $source;
 }
-add_filter( 'upgrader_post_install', 'rq_chatbot_rename_github_zipball', 10, 3 );
+add_filter( 'upgrader_source_selection', 'rq_chatbot_rename_github_zipball', 10, 4 );
+
