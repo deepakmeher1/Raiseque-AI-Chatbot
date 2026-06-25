@@ -200,16 +200,28 @@ function rq_chatbot_github_plugin_popup_info( $res, $action, $args ) {
             $info = json_decode( wp_remote_retrieve_body( $response ), true );
             if ( $info ) {
                 $res = new stdClass();
-                $res->name           = $info['name'];
-                $res->slug           = 'raiseque-ai-chatbot';
-                $res->version        = $info['version'];
-                $res->author         = 'Deepak Ku Meher (Raiseque)';
-                $res->homepage       = $info['homepage'];
-                $res->download_link  = $info['download_url'];
-                $res->sections       = array(
-                    'description' => isset( $info['sections']['description'] ) ? $info['sections']['description'] : '',
-                    'changelog'   => isset( $info['sections']['changelog'] ) ? $info['sections']['changelog'] : ''
-                );
+                $res->name            = isset( $info['name'] ) ? $info['name'] : '';
+                $res->slug            = 'raiseque-ai-chatbot';
+                $res->version         = isset( $info['version'] ) ? $info['version'] : '';
+                $res->author          = isset( $info['author'] ) ? $info['author'] : '';
+                $res->author_profile  = isset( $info['author_profile'] ) ? $info['author_profile'] : '';
+                $res->homepage        = isset( $info['homepage'] ) ? $info['homepage'] : '';
+                $res->download_link   = isset( $info['download_url'] ) ? $info['download_url'] : '';
+                $res->requires        = isset( $info['requires'] ) ? $info['requires'] : '';
+                $res->tested          = isset( $info['tested'] ) ? $info['tested'] : '';
+                $res->requires_php    = isset( $info['requires_php'] ) ? $info['requires_php'] : '';
+                $res->active_installs = isset( $info['active_installs'] ) ? $info['active_installs'] : '';
+                $res->rating          = isset( $info['rating'] ) ? $info['rating'] : '';
+                $res->num_ratings     = isset( $info['num_ratings'] ) ? $info['num_ratings'] : '';
+                
+                if ( isset( $info['banners'] ) ) {
+                    $res->banners = array(
+                        'low'  => isset( $info['banners']['low'] ) ? $info['banners']['low'] : '',
+                        'high' => isset( $info['banners']['high'] ) ? $info['banners']['high'] : ''
+                    );
+                }
+                
+                $res->sections        = isset( $info['sections'] ) ? $info['sections'] : array();
                 return $res;
             }
         }

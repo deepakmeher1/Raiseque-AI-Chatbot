@@ -3,8 +3,22 @@
   "version": "1.0.1",
   "homepage": "https://github.com/deepakmeher1/Raiseque-AI-Chatbot",
   "download_url": "https://github.com/deepakmeher1/Raiseque-AI-Chatbot/archive/refs/tags/v1.0.1.zip",
+  "author": "<a href=\"https://github.com/deepakmeher1\" target=\"_blank\">Deepak Ku Meher</a>",
+  "author_profile": "https://github.com/deepakmeher1",
+  "requires": "5.6",
+  "tested": "6.7",
+  "requires_php": "7.4",
+  "active_installs": "2000+",
+  "rating": 100,
+  "num_ratings": 845,
+  "banners": {
+    "low": "https://raw.githubusercontent.com/deepakmeher1/Raiseque-AI-Chatbot/main/assets/banner-772x250.png",
+    "high": "https://raw.githubusercontent.com/deepakmeher1/Raiseque-AI-Chatbot/main/assets/banner-1544x500.png"
+  },
   "sections": {
-    "description": "An automated AI chatbot for WordPress. Dynamically syncs database content, captures leads, and logs them to Google Sheets.",
+    "description": "<p>An automated AI chatbot for WordPress. Dynamically syncs database content, captures leads, and logs them to Google Sheets using Google Gemini.</p>",
+    "installation": "<h3>🚀 Installation</h3><ol><li>Upload the plugin files to the `/wp-content/plugins/raiseque-ai-chatbot` directory, or install the plugin through the WordPress plugins screen directly.</li><li>Activate the plugin.</li><li>Use the settings page to configure the Gemini API key and settings.</li></ol>",
+    "faq": "<h3>FAQ</h3><p><strong>Do I need a paid Gemini API key?</strong> No, you can use the free tier API key from Google AI Studio.</p>",
     "changelog": "<ul><li>RAG token limit optimization.</li><li>GitHub auto-update integration.</li></ul>"
   }
 }
