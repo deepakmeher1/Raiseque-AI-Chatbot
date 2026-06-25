@@ -1349,7 +1349,7 @@ function getOrCreateSheet(ss, name) {
                         <div id="doc-install" class="rq-doc-content">
                             <h3>🚀 Simple Setup Steps</h3>
                             <ol style="padding-left: 20px; margin-bottom: 20px; line-height: 1.6;">
-                                <li><strong>Install & Activate:</strong> Upload `raiseque-gemini-chatbot.zip` under WordPress > Plugins > Add New and click Activate.</li>
+                                <li><strong>Install & Activate:</strong> Upload `raiseque-ai-chatbot.zip` under WordPress > Plugins > Add New and click Activate.</li>
                                 <li><strong>Register License:</strong> Input your Name and Email. You will receive an activation code (or use 123456 in Developer Mode).</li>
                                 <li><strong>Gemini Setup:</strong> Create an API key in <a href="https://aistudio.google.com/" target="_blank" rel="noopener">Google AI Studio</a>, paste it, and pick <strong>Gemini 3.5 Flash</strong>.</li>
                                 <li><strong>Sync Google Sheet (Optional):</strong> Deploy the App Script template in your Google Sheet and copy-paste the Web App Webhook URL in Settings.</li>

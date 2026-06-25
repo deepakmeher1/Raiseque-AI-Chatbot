@@ -35,7 +35,7 @@ Syncs captured leads with your Google Sheet using a simple Apps Script webhook i
 
 == Installation ==
 
-1. Upload the `raiseque-gemini-chatbot` folder to the `/wp-content/plugins/` directory, or upload the ZIP file via WordPress Admin > Plugins > Add New.
+1. Upload the `raiseque-ai-chatbot` folder to the `/wp-content/plugins/` directory, or upload the ZIP file via WordPress Admin > Plugins > Add New.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 3. Complete the account activation screen (enters your name and email to receive your free activation code).
 4. Configure your Gemini API key and settings in **Settings** > **Gemini Chatbot**.

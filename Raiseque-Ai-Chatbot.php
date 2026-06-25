@@ -115,7 +115,7 @@ add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'rq_chatbot_pl
  * Add custom row meta links (View details | Getting Started | Documentation) next to Version.
  */
 function rq_chatbot_plugin_row_meta( $links, $file ) {
-    if ( strpos( $file, 'raiseque-gemini-chatbot.php' ) !== false ) {
+    if ( strpos( $file, 'Raiseque-Ai-Chatbot.php' ) !== false ) {
         $new_links = array(
             'view_details'    => '<a href="' . esc_url( admin_url( 'options-general.php?page=rq-chatbot-settings#tab-info' ) ) . '">' . __( 'View details', 'rq-chatbot' ) . '</a>',
             'getting_started' => '<a href="' . esc_url( admin_url( 'options-general.php?page=rq-chatbot-settings#tab-info' ) ) . '">' . __( 'Getting Started', 'rq-chatbot' ) . '</a>',
@@ -158,11 +158,11 @@ function rq_chatbot_check_github_updates( $transient ) {
     }
 
     $new_version = ltrim( $info['version'], 'v' );
-    $plugin_slug = 'raiseque-gemini-chatbot/raiseque-gemini-chatbot.php';
+    $plugin_slug = 'raiseque-ai-chatbot/Raiseque-Ai-Chatbot.php';
 
     if ( version_compare( RQ_CHATBOT_VERSION, $new_version, '<' ) ) {
         $obj = new stdClass();
-        $obj->slug        = 'raiseque-gemini-chatbot';
+        $obj->slug        = 'raiseque-ai-chatbot';
         $obj->plugin      = $plugin_slug;
         $obj->new_version = $new_version;
         $obj->url         = $info['homepage'];
@@ -183,7 +183,7 @@ function rq_chatbot_github_plugin_popup_info( $res, $action, $args ) {
         return $res;
     }
 
-    if ( isset( $args->slug ) && $args->slug === 'raiseque-gemini-chatbot' ) {
+    if ( isset( $args->slug ) && $args->slug === 'raiseque-ai-chatbot' ) {
         $repo_owner = defined( 'RQ_CHATBOT_GITHUB_OWNER' ) ? RQ_CHATBOT_GITHUB_OWNER : 'deepakmeher1';
         $repo_name  = defined( 'RQ_CHATBOT_GITHUB_REPO' ) ? RQ_CHATBOT_GITHUB_REPO : 'Raiseque-AI-Chatbot';
 
@@ -201,7 +201,7 @@ function rq_chatbot_github_plugin_popup_info( $res, $action, $args ) {
             if ( $info ) {
                 $res = new stdClass();
                 $res->name           = $info['name'];
-                $res->slug           = 'raiseque-gemini-chatbot';
+                $res->slug           = 'raiseque-ai-chatbot';
                 $res->version        = $info['version'];
                 $res->author         = 'Deepak Ku Meher (Raiseque)';
                 $res->homepage       = $info['homepage'];
@@ -220,16 +220,16 @@ function rq_chatbot_github_plugin_popup_info( $res, $action, $args ) {
 add_filter( 'plugins_api', 'rq_chatbot_github_plugin_popup_info', 20, 3 );
 
 /**
- * Ensure the extracted folder is renamed correctly to 'raiseque-gemini-chatbot'
+ * Ensure the extracted folder is renamed correctly to 'raiseque-ai-chatbot'
  * during update installation (using the source selection filter).
  */
 function rq_chatbot_rename_github_zipball( $source, $remote_source, $upgrader, $hook_extra = array() ) {
     global $wp_filesystem;
     
     // Only proceed if our main plugin file exists inside the extracted source folder
-    if ( $wp_filesystem->exists( $source . 'raiseque-gemini-chatbot.php' ) ) {
+    if ( $wp_filesystem->exists( $source . 'Raiseque-Ai-Chatbot.php' ) ) {
         $parent = trailingslashit( dirname( $source ) );
-        $new_source = $parent . 'raiseque-gemini-chatbot/';
+        $new_source = $parent . 'raiseque-ai-chatbot/';
         
         if ( $source !== $new_source ) {
             if ( $wp_filesystem->move( $source, $new_source, true ) ) {
