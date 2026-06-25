@@ -3,7 +3,7 @@
  * Plugin Name: Raiseque Ai Chatbot
  * Plugin URI: https://raiseque.com
  * Description: An automated AI chatbot for WordPress. Dynamically syncs your website pages and posts to answer any user queries in real-time using Google Gemini, featuring custom colors, secure server-side proxying, and IP-based rate limiting.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Deepak Ku Meher
  * Author URI: https://raiseque.com
  * License: GPL2
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Define Constants.
-define( 'RQ_CHATBOT_VERSION', '1.0.0' );
+define( 'RQ_CHATBOT_VERSION', '1.0.1' );
 define( 'RQ_CHATBOT_PATH', plugin_dir_path( __FILE__ ) );
 define( 'RQ_CHATBOT_URL', plugin_dir_url( __FILE__ ) );
 
